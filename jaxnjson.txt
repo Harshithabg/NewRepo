@@ -1,0 +1,43 @@
+package com.lti.json.example;
+
+import java.io.File;
+import javax.xml.bind.*;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
+public class JaxbJsonExample {
+	
+	public static void main(String[] args) 
+    {
+		Employee employee=new Employee();
+		employee.setId(1);
+		employee.setAge(25);
+		employee.setName("anki");
+		employee.setGender("female");
+		employee.setRole("trainer");
+		employee.setPassword("abc");
+         
+        jaxbObjectToJSON(employee);
+    }
+	private static void jaxbObjectToJSON(Employee employee) 
+    {
+        try
+        {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Employee.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+ 
+            // To format JSON
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE); 
+             
+            //Set JSON type
+            jaxbMarshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+            jaxbMarshaller.setProperty(MarshallerProperties.JSON_INCLUDE_ROOT, true);
+ 
+             //Store JSON to File
+            File file = new File("employee.json");
+            jaxbMarshaller.marshal(employee, file);
+        } 
+        catch (JAXBException e) 
+        {
+            e.printStackTrace();
+        }
+    }
+}
